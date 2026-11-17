@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Portfolio BTS SIO SISR</title>
+<style>
+:root{
+  --bg:#0f1220; --card:#181c30; --card2:#1f2440; --text:#e8eaf6; --muted:#9aa0c3;
+  --accent:#6c8cff; --accent2:#a56cff; --border:#2a3055; --radius:16px;
+}
+:root[data-theme="light"]{
+  --bg:#f5f6fb; --card:#ffffff; --card2:#eef0fa; --text:#1b1f3a; --muted:#5d6388; --border:#dfe2f2;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;min-height:100vh}
+a{color:var(--accent);text-decoration:none}
+
+/* FOND ANIMÉ */
+#bg{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+main,footer{position:relative;z-index:1}
+
+/* NAV */
+header{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--bg) 85%,transparent);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+.nav{max-width:1100px;margin:auto;display:flex;align-items:center;justify-content:space-between;padding:12px 20px;gap:12px}
+.logo{font-weight:800;font-size:1.1rem;background:linear-gradient(90deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent}
+nav ul{display:flex;gap:4px;list-style:none;flex-wrap:wrap}
+nav button.tab{background:none;border:0;color:var(--muted);padding:8px 12px;border-radius:999px;cursor:pointer;font:inherit;font-size:.92rem;transition:.2s}
+nav button.tab:hover{color:var(--text);background:var(--card)}
+nav button.tab.active{color:#fff;background:linear-gradient(90deg,var(--accent),var(--accent2))}
+.tools{display:flex;gap:8px;align-items:center}
+.icon-btn{background:var(--card);border:1px solid var(--border);color:var(--text);width:40px;height:40px;border-radius:12px;cursor:pointer;font-size:1.1rem}
+#burger{display:none}
+@media(max-width:860px){
+  #burger{display:block}
+  nav{position:absolute;top:100%;left:0;right:0;background:var(--bg);border-bottom:1px solid var(--border);display:none;padding:10px 20px 16px}
+  nav.open{display:block}
+  nav ul{flex-direction:column}
+  nav button.tab{width:100%;text-align:left;border-radius:12px}
+}
+
+/* LAYOUT */
+main{max-width:1100px;margin:auto;padding:30px 20px 60px}
+section.panel{display:none;animation:fade .35s ease}
+section.panel.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+h1{font-size:clamp(2rem,6vw,3.4rem);line-height:1.15;margin-bottom:12px}
+h2{font-size:1.8rem;margin-bottom:6px}
+.sub{color:var(--muted);margin-bottom:26px}
+.grad{background:linear-gradient(90deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;transition:.25s}
+.card:hover{transform:translateY(-3px);border-color:var(--accent)}
+.card h3{font-size:1.1rem;margin-bottom:6px}
+.card p{color:var(--muted);font-size:.95rem}
+.tag{display:inline-block;font-size:.75rem;padding:3px 10px;border-radius:999px;background:var(--card2);color:var(--accent);margin:8px 6px 0 0;border:1px solid var(--border)}
+.btn{display:inline-block;padding:12px 22px;border-radius:12px;font-weight:600;cursor:pointer;border:0;font:inherit;font-weight:600;transition:.2s}
+.btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px color-mix(in srgb,var(--accent) 35%,transparent)}
+.btn.primary{background:linear-gradient(90deg,var(--accent),var(--accent2));color:#fff}
+.btn.ghost{background:var(--card);color:var(--text);border:1px solid var(--border)}
+.btn:disabled{opacity:.6;cursor:wait;transform:none;box-shadow:none}
+.btns{display:flex;gap:12px;flex-wrap:wrap;margin-top:22px}
+
+/* ONGLETS INTERNES (VEILLE) */
+.vtabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px}
+.vtabs button{background:var(--card);border:1px solid var(--border);color:var(--muted);padding:10px 18px;border-radius:999px;cursor:pointer;font:inherit;font-weight:600;transition:.2s}
+.vtabs button:hover{color:var(--text);border-color:var(--accent)}
+.vtabs button.active{color:#fff;border-color:transparent;background:linear-gradient(90deg,var(--accent),var(--accent2))}
+
+/* HERO */
+.hero{display:grid;grid-template-columns:1.4fr 1fr;gap:30px;align-items:center;padding:30px 0 10px}
+.badge{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border-radius:999px;background:var(--card);border:1px solid var(--border);color:var(--muted);font-size:.85rem;margin-bottom:16px}
+.badge::before{content:"";width:8px;height:8px;border-radius:50%;background:#4ade80;box-shadow:0 0 0 0 #4ade80aa;animation:pulse 2s infinite}
+@keyframes pulse{70%{box-shadow:0 0 0 9px transparent}100%{box-shadow:0 0 0 0 transparent}}
+.name-grad{background:linear-gradient(90deg,var(--accent),var(--accent2),var(--accent));background-size:200% auto;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shine 5s linear infinite}
+@keyframes shine{to{background-position:200% center}}
+.typing{font-size:clamp(1.05rem,2.6vw,1.4rem);font-weight:600;min-height:2em;margin-bottom:10px;font-family:ui-monospace,"Cascadia Code",Consolas,monospace}
+.typing .pre{color:var(--accent2)}
+.caret{display:inline-block;width:2px;height:1.1em;background:var(--accent);margin-left:3px;vertical-align:text-bottom;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+
+.avatar-wrap{position:relative;width:100%;max-width:300px;aspect-ratio:1;margin:auto;transition:transform .15s ease-out;transform-style:preserve-3d}
+.avatar-wrap::before{content:"";position:absolute;inset:-8px;border-radius:50%;background:conic-gradient(from 0deg,var(--accent),var(--accent2),transparent 60%,var(--accent));animation:spin 6s linear infinite;filter:blur(3px);opacity:.9}
+@keyframes spin{to{transform:rotate(360deg)}}
+.avatar{position:relative;width:100%;height:100%;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));display:grid;place-items:center;font-size:5rem;color:#fff;overflow:hidden;border:4px solid var(--bg)}
+.avatar img{width:100%;height:100%;object-fit:cover}
+.float-chip{position:absolute;padding:6px 12px;border-radius:12px;background:var(--card);border:1px solid var(--border);font-family:ui-monospace,Consolas,monospace;font-size:.85rem;color:var(--accent);box-shadow:0 6px 20px #0004;animation:floaty 5s ease-in-out infinite}
+.float-chip:nth-of-type(1){top:2%;left:-6%}
+.float-chip:nth-of-type(2){top:18%;right:-10%;animation-delay:-1.2s}
+.float-chip:nth-of-type(3){bottom:10%;left:-10%;animation-delay:-2.4s}
+.float-chip:nth-of-type(4){bottom:0;right:-2%;animation-delay:-3.6s}
+@keyframes floaty{50%{transform:translateY(-12px)}}
+@media(max-width:760px){.hero{grid-template-columns:1fr;text-align:center}.btns{justify-content:center}.avatar-wrap{order:-1;max-width:200px}.float-chip{font-size:.75rem}}
+
+/* STATS */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:14px;margin:30px 0 18px}
+.stat{text-align:center;padding:16px 10px}
+.stat b{display:block;font-size:2rem;background:linear-gradient(90deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.stat span{color:var(--muted);font-size:.85rem}
+
+/* MARQUEE */
+.marquee{overflow:hidden;border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:12px 0;margin:10px 0 28px;mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent);-webkit-mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent)}
+.marquee-track{display:flex;gap:14px;width:max-content;animation:scroll 28s linear infinite}
+.marquee:hover .marquee-track{animation-play-state:paused}
+.marquee-track span{padding:6px 16px;border-radius:999px;background:var(--card);border:1px solid var(--border);color:var(--accent);font-family:ui-monospace,Consolas,monospace;font-size:.9rem;white-space:nowrap}
+@keyframes scroll{to{transform:translateX(-50%)}}
+
+/* TERMINAL */
+.home-grid{display:grid;grid-template-columns:1.3fr 1fr;gap:20px;align-items:start}
+@media(max-width:860px){.home-grid{grid-template-columns:1fr}}
+.term{background:#0b0e1a;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:0 14px 40px #0005;color:#d7e0ff;font-family:ui-monospace,"Cascadia Code",Consolas,monospace;font-size:.88rem}
+.term-bar{display:flex;align-items:center;gap:7px;padding:10px 14px;background:#141830;border-bottom:1px solid #2a3055}
+.term-bar i{width:12px;height:12px;border-radius:50%;background:#ff5f56}
+.term-bar i:nth-child(2){background:#ffbd2e}
+.term-bar i:nth-child(3){background:#27c93f}
+.term-bar span{margin-left:8px;color:#7e86b3;font-size:.8rem}
+.term-body{height:250px;overflow-y:auto;padding:12px 14px;white-space:pre-wrap;word-break:break-word}
+.term-body .cmd{color:#7ee787}
+.term-body .err{color:#ff7b72}
+.term-body .hl{color:#79c0ff}
+#term-form{display:flex;max-width:none;gap:8px;align-items:center;padding:10px 14px;border-top:1px solid #2a3055;background:#0f1324}
+#term-form .ps{color:#7ee787}
+#term-in{flex:1;padding:0;border:0;border-radius:0;background:transparent;color:#d7e0ff;font:inherit;outline:none}
+.term-chips{display:flex;gap:8px;flex-wrap:wrap;padding:0 14px 12px;background:#0f1324}
+.term-chips button{background:#1a2040;color:#9db4ff;border:1px solid #2a3055;border-radius:8px;padding:3px 10px;font:inherit;font-size:.78rem;cursor:pointer}
+.term-chips button:hover{background:#252d5c}
+.quick{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.quick .card{cursor:pointer;text-align:center;padding:18px 12px}
+.quick .card .ic{font-size:1.8rem;display:block;margin-bottom:4px}
+.quick .card:hover .ic{animation:floaty 1s ease-in-out}
+.hint{color:var(--muted);font-size:.82rem;margin-top:12px;text-align:center}
+
+/* TIMELINE */
+.timeline{border-left:2px solid var(--border);padding-left:22px;display:flex;flex-direction:column;gap:20px}
+.tl-item{position:relative}
+.tl-item::before{content:"";position:absolute;left:-30px;top:6px;width:14px;height:14px;border-radius:50%;background:var(--accent);border:3px solid var(--bg)}
+.tl-date{font-size:.8rem;color:var(--accent);font-weight:700}
+
+/* COMPETENCES */
+.skill{margin-bottom:14px}
+.skill-top{display:flex;justify-content:space-between;font-size:.92rem;margin-bottom:5px}
+.bar{height:9px;background:var(--card2);border-radius:99px;overflow:hidden}
+.bar>span{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:99px}
+h3.cat{margin:26px 0 12px;font-size:1.15rem}
+
+/* TABLE */
+.table-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:var(--radius)}
+table{width:100%;border-collapse:collapse;min-width:640px;background:var(--card)}
+th,td{padding:12px 14px;text-align:left;border-bottom:1px solid var(--border);font-size:.92rem}
+th{background:var(--card2);color:var(--muted);font-weight:600}
+tr:last-child td{border-bottom:0}
+td.ok{color:#4ade80;font-weight:700;text-align:center}
+
+/* CONTACT */
+.contact-list{display:grid;gap:12px;margin-bottom:24px}
+form{display:grid;gap:12px;max-width:560px}
+input,textarea{width:100%;padding:12px 14px;border-radius:12px;border:1px solid var(--border);background:var(--card);color:var(--text);font:inherit}
+textarea{min-height:130px;resize:vertical}
+.form-status{font-size:.92rem;min-height:1.4em}
+.form-status.ok{color:#4ade80}
+.form-status.ko{color:#ff7b72}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+footer{text-align:center;color:var(--muted);font-size:.85rem;padding:24px;border-top:1px solid var(--border)}
+.empty{color:var(--muted);font-style:italic}
+
+@media(prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+}
+</style>
+</head>
+<body>
+
+<canvas id="bg" aria-hidden="true"></canvas>
+
+<header>
+  <div class="nav">
+    <div class="logo" id="logo"></div>
+    <nav id="nav"><ul id="tabs"></ul></nav>
+    <div class="tools">
+      <button class="icon-btn" id="theme" title="Changer de thème">🌙</button>
+      <button class="icon-btn" id="burger" aria-label="Menu">☰</button>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <!-- ACCUEIL -->
+  <section class="panel" id="accueil">
+    <div class="hero" id="hero">
+      <div>
+        <span class="badge" id="h-badge"></span>
+        <h1><span id="h-greet">Bonjour</span>, moi c'est <span class="name-grad" id="h-name"></span></h1>
+        <div class="typing"><span class="pre">&gt; </span><span id="typed"></span><span class="caret"></span></div>
+        <p class="sub" id="h-intro" style="font-size:1.1rem"></p>
+        <div class="btns">
+          <button class="btn primary" onclick="go('projets')">Voir mes projets</button>
+          <button class="btn ghost" onclick="go('contact')">Me contacter</button>
+        </div>
+      </div>
+      <div class="avatar-wrap" id="avatar-wrap">
+        <div class="avatar" id="avatar"></div>
+        <span class="float-chip">&lt;/&gt;</span>
+        <span class="float-chip">🔒 sudo</span>
+        <span class="float-chip">🐧 Linux</span>
+        <span class="float-chip">{ code }</span>
+      </div>
+    </div>
+
+    <div class="stats" id="stats"></div>
+
+    <div class="marquee"><div class="marquee-track" id="marquee"></div></div>
+
+    <div class="home-grid">
+      <div>
+        <div class="term" id="term" onclick="document.getElementById('term-in').focus()">
+          <div class="term-bar"><i></i><i></i><i></i><span id="term-title">visiteur@portfolio:~</span></div>
+          <div class="term-body" id="term-body"></div>
+          <form id="term-form" autocomplete="off">
+            <span class="ps">$</span>
+            <input id="term-in" spellcheck="false" autocapitalize="off" placeholder="tape help puis Entrée">
+          </form>
+          <div class="term-chips" id="term-chips"></div>
+        </div>
+        <p class="hint">💡 Essaie aussi <b>matrix</b> ou clique n'importe où pour faire apparaître des particules.</p>
+      </div>
+      <div class="quick" id="quick"></div>
+    </div>
+  </section>
+
+  <!-- A PROPOS -->
+  <section class="panel" id="apropos">
+    <h2>À propos de moi</h2>
+    <p class="sub">Qui je suis, ce que j'aime, où je vais.</p>
+    <div class="card" id="about-text"></div>
+    <h3 class="cat">Centres d'intérêt</h3>
+    <div id="interests"></div>
+  </section>
+
+  <!-- PARCOURS -->
+  <section class="panel" id="parcours">
+    <h2>Parcours</h2>
+    <p class="sub">Formation, expériences et diplômes.</p>
+    <div class="timeline" id="timeline"></div>
+  </section>
+
+  <!-- COMPETENCES -->
+  <section class="panel" id="competences">
+    <h2>Compétences</h2>
+    <p class="sub">Référentiel BTS SIO option SISR et compétences techniques.</p>
+    <h3 class="cat" style="margin-top:0">Blocs de compétences</h3>
+    <div class="grid" id="blocs"></div>
+    <h3 class="cat">Compétences techniques</h3>
+    <div id="skills"></div>
+  </section>
+
+  <!-- PROJETS -->
+  <section class="panel" id="projets">
+    <h2>Projets &amp; réalisations</h2>
+    <p class="sub">Mes réalisations scolaires et personnelles.</p>
+    <div class="grid" id="projects"></div>
+  </section>
+
+  <!-- STAGES -->
+  <section class="panel" id="stages">
+    <h2>Stages</h2>
+    <p class="sub">Mes expériences en entreprise.</p>
+    <div class="grid" id="internships"></div>
+  </section>
+
+  <!-- VEILLE -->
+  <section class="panel" id="veille">
+    <h2>Veille technologique</h2>
+    <p class="sub">Choisis une veille pour afficher son contenu.</p>
+    <div class="grid" id="veille-list"></div>
+    <div id="veille-content" style="display:none"></div>
+  </section>
+
+  <!-- SYNTHESE -->
+  <section class="panel" id="synthese">
+    <h2>Tableau de synthèse</h2>
+    <p class="sub">Les compétences validées par chaque réalisation.</p>
+    <div class="table-wrap"><table id="synth-table"></table></div>
+  </section>
+
+  <!-- DOCUMENTS -->
+  <section class="panel" id="documents">
+    <h2>Documents</h2>
+    <p class="sub">CV, attestations, rapports de stage…</p>
+    <div class="grid" id="docs"></div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="panel" id="contact">
+    <h2>Contact</h2>
+    <p class="sub">Un message, une question, une opportunité ?</p>
+    <div class="contact-list" id="contact-list"></div>
+    <form id="form">
+      <input id="f-name" placeholder="Ton nom" required>
+      <input id="f-mail" type="email" placeholder="Ton e-mail" required>
+      <textarea id="f-msg" placeholder="Ton message" required></textarea>
+      <input class="hp" id="f-hp" type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <button class="btn primary" id="f-btn" type="submit">Envoyer par e-mail</button>
+      <p class="form-status" id="f-status" role="status" aria-live="polite"></p>
+    </form>
+  </section>
+
+</main>
+
+<footer id="footer"></footer>
+
+<script>
+/* =====================================================
+   ✏️ MODIFIE TOUT ICI : c'est la seule partie à éditer.
+   Pour ajouter un projet, un stage, une compétence…
+   copie une ligne { ... }, colle-la et change le texte.
+   Pour ajouter une veille : copie tout le bloc { ... }
+   de "veilles" (de id: jusqu'à la fin) et change le contenu.
+   ===================================================== */
+const DATA = {
+
+  nom: "Ryad HALLALEL",
+  titre: "Étudiant en BTS SIO · option SISR",
+  intro: "Passionné par le développement et l'informatique, je prépare mon BTS Services Informatiques aux Organisations, option Solutions d'Infrastructures, Systèmes et Réseaux.",
+  photo: "pp.jpg", // ex : "photo.jpg" (mets l'image dans le même dossier). Sinon les initiales s'affichent.
+
+  // Phrases qui s'écrivent toutes seules sur l'accueil
+  accroches: [
+    "Passionné d'informatique",
+    "Curieux de cybersécurité",
+    "Fan de systèmes et réseaux",
+    "Futur ingénieur en cybersécurité"
+  ],
+
+  apropos: "Actuellement étudiant en BTS SIO, option SISR, je suis passionné par l’informatique et les nouvelles technologies, notamment les systèmes, les réseaux et la cybersécurité. Curieux, motivé et rigoureux, je souhaite développer mes compétences et acquérir de l’expérience dans le domaine informatique. Mon objectif est de poursuivre mes études vers une licence en cybersécurité, puis un master en école d’ingénieurs, afin de devenir un professionnel qualifié dans ce secteur.",
+  interets: ["Cybersécurité", "Développement web", "Jeux vidéo"],
+
+  parcours: [
+    { date: "2026 – 2028", titre: "BTS SIO option SISR", lieu: "Lycée Jean Rostand, Chantilly", desc: "Solutions d'Infrastructures, Systèmes et Réseaux." },
+    { date: "2025 – 2026", titre: "BTS SIO option SISR", lieu: "Promeo, Senlis", desc: "Solutions d'Infrastructures, Systèmes et Réseaux." },
+    { date: "2024 – 2025", titre: "Licence Informatique", lieu: "Université Picardie Jules Vernes, UFR des Sciences, Amiens", desc: "Spécialité Mathématiques" },
+    { date: "2023 – 2024", titre: "Baccalauréat Général", lieu: "Lycée Marie Curie, Nogent-sur-Oise", desc: "Spécialité Mathématiques, NSI" }
+  ],
+
+  blocs: [
+    { titre: "Bloc 1 · Support et mise à disposition de services informatiques", desc: "Gérer le patrimoine informatique, répondre aux incidents et demandes, développer sa présence en ligne, travailler en mode projet, mettre à disposition un service, organiser son développement professionnel." },
+    { titre: "Bloc 2 · Administration des systèmes et des réseaux (SISR)", desc: "Concevoir une solution d'infrastructure réseau, installer, tester et déployer une solution d'infrastructure réseau, exploiter, dépanner et superviser une solution d'infrastructure réseau." },
+    { titre: "Bloc 3 · Cybersécurité des services informatiques (SISR)", desc: "Protéger les données à caractère personnel, préserver l'identité numérique, sécuriser les équipements et les usages, assurer la cybersécurité d'une infrastructure réseau, d'un système, d'un service." }
+  ],
+
+  competences: [
+    { cat: "Développement", items: [
+      { nom: "HTML / CSS", niveau: 60 },
+      { nom: "JavaScript", niveau: 30 },
+      { nom: "PHP", niveau: 30 },
+      { nom: "Python", niveau: 60 }
+    ]},
+    { cat: "Données & systèmes", items: [
+      { nom: "SQL / MySQL", niveau: 40 },
+      { nom: "Linux (Ubuntu)", niveau: 60 },
+      { nom: "Git / GitHub", niveau: 30 }
+    ]}
+  ],
+
+  projets: [
+    { titre: "Nom du projet 1", desc: "Décris en 2-3 phrases le contexte, ce que tu as fait et le résultat.", tags: ["PHP", "MySQL"], lien: "", lienTexte: "Voir le projet" },
+    { titre: "Nom du projet 2", desc: "Décris ton projet ici.", tags: ["JavaScript", "HTML/CSS"], lien: "", lienTexte: "Voir le code" },
+    { titre: "Nom du projet 3", desc: "Décris ton projet ici.", tags: ["Python"], lien: "", lienTexte: "Voir le projet" }
+  ],
+
+  stages: [
+    { titre: "Stage 1ère année", entreprise: "Nom de l'entreprise", date: "Mois AAAA – Mois AAAA", desc: "Missions réalisées, outils utilisés, ce que tu as appris.", tags: ["Support", "Développement"] }
+  ],
+
+  // Liste des veilles : chaque veille = un onglet cliquable dans la page "Veille"
+  veilles: [
+  {
+    id: "ransomwares",
+    titre: "Les Ransomwares",
+    desc: "Attaques, chiffres et tendances de 2026 : comprendre la menace et savoir s'en protéger.",
+    tags: ["Cybersécurité", "Février – Novembre 2026"],
+    theme: "Les ransomwares (rançongiciels)",
+    pdf: "veille informatique HALLALEL Ryad _ Les ransomwares.pdf", // ex : "Veille Ransomwares.pdf" (mets le PDF dans le même dossier pour afficher un bouton de téléchargement)
+
+    essentiel: [
+      { v: "2 627", t: "attaques revendiquées au 3e trimestre 2026 (record)" },
+      { v: "28 %", t: "des victimes ont payé en 2025" },
+      { v: "3", t: "groupes dominants : Qilin, The Gentlemen, Akira" },
+      { v: "VPN", t: "et pare-feu : une porte d'entrée très utilisée" }
+    ],
+
+    presentation: [
+      ["Thème", "Les ransomwares (rançongiciels)"],
+      ["Objectif", "Suivre les attaques récentes, les chiffres et les évolutions pour comprendre la menace et savoir s'en protéger."],
+      ["Période étudiée", "De février à novembre 2026"],
+      ["Types de sources", "Rapport de l'ANSSI (via un résumé), études d'entreprises spécialisées (Check Point Research, Chainalysis, Comparitech), presse spécialisée et généraliste (LeMagIT, Euronews, Cyberpress, Cyberattaque.org)"],
+      ["Date de réalisation", "13 novembre 2026"]
+    ],
+
+    definition: "Un ransomware (rançongiciel) est un logiciel malveillant qui chiffre les données d'une organisation pour les rendre inutilisables, ou qui les vole. Les pirates demandent ensuite une rançon, soit pour rendre l'accès aux données, soit pour ne pas les publier : c'est la double extorsion. Beaucoup de groupes fonctionnent en « ransomware-as-a-service » : ils louent leur outil à des affiliés qui font les attaques. Certains ne chiffrent même plus et se contentent de voler les données (ANSSI).",
+
+    chiffres: [
+      ["Attaques revendiquées, T3 2026", "2 627 (+29 % vs T2, +61 % vs T3 2025)", "Comparitech"],
+      ["Attaques confirmées par les victimes, T3 2026", "247 sur 2 627", "Comparitech"],
+      ["Part des États-Unis, T3 2026", "41 % (1 066 attaques)", "Comparitech"],
+      ["Demande de rançon moyenne connue, T3 2026", "602 400 $ (médiane : 150 000 $)", "Comparitech"],
+      ["Victimes sur les sites de fuite, T1 2026", "2 122", "Check Point Research"],
+      ["Groupes actifs, T1 2026", "71 (contre 85 au pic de 2025)", "Check Point Research"],
+      ["Part des 10 premiers groupes, T1 2026", "71,1 % des victimes", "Check Point Research"],
+      ["Attaques ransomware recensées en France, 2025", "128 (légère baisse)", "ANSSI (via CyberVeille)"],
+      ["Vols de données recensés en France, 2025", "196 (130 en 2024)", "ANSSI (via CyberVeille)"],
+      ["Paiements de rançons, 2025", "Plus de 820 M$ (environ -8 % vs 2024)", "Chainalysis"],
+      ["Victimes qui paient, 2025", "28 % (record à la baisse)", "Chainalysis"],
+      ["Rançon médiane payée, 2025", "59 556 $ (12 738 $ en 2024)", "Chainalysis"]
+    ],
+
+    groupes: [
+      ["Qilin", "Groupe le plus actif : 357 revendications au T3 2026 (27 confirmées) et 338 victimes au T1 2026. Souche la plus fréquente en France en 2025 (21 %).", "Comparitech, Check Point Research, ANSSI"],
+      ["The Gentlemen", "Apparu en 2025, en ransomware-as-a-service. 342 revendications au T3 2026 (26 confirmées). Dispose d'environ 14 700 pare-feu FortiGate déjà compromis.", "Comparitech, Cyberattaque.org, Check Point Research"],
+      ["Akira", "9 % des souches en France en 2025, mais en baisse au T3 2026 (-23 %).", "ANSSI, Comparitech"],
+      ["LockBit", "5 % des souches en France en 2025, mais en forte baisse au T3 2026 (-51 %).", "ANSSI, Comparitech"],
+      ["Clop", "Passe de 1 attaque au T2 à 48 au T3 2026. Connu pour une campagne massive via une faille d'Oracle E-Business Suite.", "Comparitech, Chainalysis"],
+      ["Direwolf", "Revendique 2,5 To de données volées à l'assureur Interseguro (Pérou), en octobre 2026.", "LeMagIT"]
+    ],
+
+    faits: [
+      { date: "13/11/2026", titre: "Opération Endgame (Europol)", desc: "Annoncée le 12 novembre : 3 réseaux de malwares démantelés (Gootloader, CastleRAT, StealC). 235 serveurs saisis et 6,4 millions de jeux de données de victimes récupérés. Ces outils servaient notamment à préparer des ransomwares.", src: "Cyberpress" },
+      { date: "12/11/2026", titre: "Groupe Alternance", desc: "The Gentlemen revendique une attaque contre ce réseau d'écoles (70 campus). Non confirmée : aucune donnée publiée, pas de communication de l'entreprise.", src: "Cyberattaque.org" },
+      { date: "04/11/2026", titre: "Établissement français du sang", desc: "Chambres froides piratées via un prestataire (nuit du 1er au 2 novembre), aucun produit sanguin perdu. Aucun ransomware cité. Même cas pour Danfoss, Intermarché et Super U en octobre.", src: "Euronews, LeMagIT" },
+      { date: "16/10/2026", titre: "Cyberhebdo de LeMagIT", desc: "Un groupe hôtelier (ransomware) et la ville d'Eichstätt (attaque présumée) sont paralysés en Allemagne. Direwolf revendique 2,5 To de données chez l'assureur Interseguro (Pérou).", src: "LeMagIT" },
+      { date: "06/10/2026", titre: "Record au 3e trimestre", desc: "2 627 attaques revendiquées (+29 % vs T2, +61 % vs T3 2025), dont 247 confirmées. Qilin et The Gentlemen en tête.", src: "Comparitech" },
+      { date: "11/05/2026", titre: "Bilan du 1er trimestre", desc: "2 122 victimes sur les sites de fuite et 71 groupes actifs. Les 10 premiers groupes font 71 % des victimes.", src: "Check Point Research" },
+      { date: "15/03/2026", titre: "Panorama ANSSI 2025", desc: "128 ransomwares recensés en France (légère baisse) mais 196 vols de données (130 en 2024). Qilin : 21 % des souches, Akira : 9 %.", src: "CyberVeille (ANSSI)" },
+      { date: "26/02/2026", titre: "Rançons payées en 2025", desc: "Plus de 820 M$ payés (environ -8 %). 28 % des victimes ont payé, mais la rançon médiane monte à 59 556 $.", src: "Chainalysis" }
+    ],
+
+    tendances: [
+      ["Plus d'attaques annoncées, moins de paiements", "Les attaques revendiquées montent (record au T3 2026) alors que seulement 28 % des victimes ont payé en 2025."],
+      ["Un marché qui se concentre", "Il y a moins de groupes actifs (71 contre 85) et les 10 premiers font plus de 70 % des victimes."],
+      ["Le vol de données au centre", "En France, les vols de données augmentent (196 contre 130) alors que les ransomwares reculent un peu. Certains groupes ne chiffrent plus."],
+      ["Des portes d'entrée connues", "Failles sur les VPN et pare-feu (Fortinet, Ivanti, Citrix…), outils d'accès à distance détournés, ingénierie sociale et sous-traitants (ANSSI)."],
+      ["Les autorités répondent", "Opération Endgame en novembre 2026, et en 2025 des sanctions contre des hébergeurs utilisés par les pirates (Chainalysis)."]
+    ],
+
+    protection: [
+      ["Failles sur les VPN, pare-feu et serveurs exposés", "Appliquer vite les correctifs de sécurité et limiter ce qui est exposé sur Internet."],
+      ["Mots de passe volés, fatigue MFA, faux appels de support", "Activer une double authentification robuste et former les utilisateurs aux arnaques."],
+      ["Outils d'accès à distance détournés (AnyDesk, TeamViewer…)", "Contrôler et surveiller les outils d'administration à distance autorisés."],
+      ["Attaques via des prestataires et sous-traitants", "Limiter et contrôler les accès donnés aux prestataires."],
+      ["Données chiffrées ou volées", "Faire des sauvegardes hors ligne, les tester, et segmenter le réseau."]
+    ],
+    protectionNote: "Bonnes pratiques générales, reliées aux modes d'attaque cités par l'ANSSI. Elles ne sont pas tirées d'un article précis.",
+
+    critique: [
+      "Revendiqué ne veut pas dire confirmé. Sur 2 627 attaques au T3 2026, seules 247 sont confirmées par les victimes. Les autres reposent sur les annonces des pirates.",
+      "Groupe Alternance. Simple revendication, non confirmée au 12 novembre 2026.",
+      "Toutes les cyberattaques ne sont pas des ransomwares. Pour l'Établissement français du sang et pour Danfoss (Intermarché, Super U), aucun ransomware n'est confirmé.",
+      "Chiffres de l'ANSSI. Ils viennent d'un résumé (CyberVeille), pas du rapport original.",
+      "Montants des rançons. Ils sont partiels : la plupart des victimes ne les communiquent pas (Comparitech)."
+    ],
+
+    sources: [
+      { n: 1, titre: "Cyberpress", date: "13/11/2026", lien: "https://cyberpress.org/europol-dismantles-three-major-malware-networks/" },
+      { n: 2, titre: "Cyberattaque.org", date: "12/11/2026", lien: "https://www.cyberattaque.org/groupe-alternance-un-ransomware-menace-le-reseau-de-70-campus-apres-une-cyberattaque/" },
+      { n: 3, titre: "Euronews", date: "04/11/2026", lien: "https://fr.euronews.com/2026/11/04/cyberattaque-des-chambres-froides-deletablissement-francais-du-sang-piratees" },
+      { n: 4, titre: "LeMagIT", date: "16/10/2026", lien: "https://www.lemagit.fr/actualites/366652455/Cyberhebdo-du-16-octobre-2026-une-semaine-violente-en-France-et-au-dela" },
+      { n: 5, titre: "Comparitech", date: "06/10/2026", lien: "https://www.comparitech.com/news/ransomware-roundup-q3-2026-stats-on-attacks-ransoms-and-active-gangs/" },
+      { n: 6, titre: "Check Point Research", date: "11/05/2026", lien: "https://research.checkpoint.com/2026/the-state-of-ransomware-q1-2026/" },
+      { n: 7, titre: "CyberVeille (résumé du rapport ANSSI)", date: "15/03/2026", lien: "https://cyberveille.ch/posts/2026-03-15-anssi-publie-le-panorama-2025-de-la-cybermenace-extorsion-espionnage-et-exploitation-massive-de-vulnerabilites/" },
+      { n: 8, titre: "Chainalysis", date: "26/02/2026", lien: "https://www.chainalysis.com/blog/crypto-ransomware-2026/" }
+    ]
+  }
+  // , { id: "autre", titre: "Titre de ta prochaine veille", ... }  ← ajoute les prochaines veilles ici
+  ],
+
+  // Tableau de synthèse : coche (true) les compétences travaillées par chaque réalisation
+  synthese: {
+    colonnes: ["Projet 1", "Projet 2", "Projet 3", "Stage 1"],
+    lignes: [
+      { comp: "Gérer le patrimoine informatique",      valide: [false, false, false, true] },
+      { comp: "Répondre aux incidents et demandes",     valide: [false, false, false, true] },
+      { comp: "Travailler en mode projet",              valide: [true, true, false, false] },
+      { comp: "Concevoir une solution applicative",     valide: [true, true, true, false] },
+      { comp: "Assurer la maintenance applicative",     valide: [false, true, true, false] },
+      { comp: "Gérer les données",                      valide: [true, false, true, false] },
+      { comp: "Garantir la sécurité des développements",valide: [true, false, false, false] }
+    ]
+  },
+
+  documents: [
+    { titre: "Mon CV", desc: "Format PDF", lien: "CV Ryad HALLALEL.pdf" },
+    { titre: "Rapport de stage", desc: "Format PDF", lien: "" },
+    { titre: "Attestation de stage", desc: "Format PDF", lien: "" }
+  ],
+
+  contact: {
+    email: "ryad.hallalel@gmail.com",
+    telephone: "0783634753",
+    linkedin: "https://www.linkedin.com/in/ryad-hallalel-b66a74362",
+    github: "",
+    ville: "Saint-Maximin, 60740"
+  }
+};
+
+/* ===================== CODE (pas besoin d'y toucher) ===================== */
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const empty = t => `<p class="empty">${t}</p>`;
+const REDUCED = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const TABS = [
+  ["accueil","Accueil"],["apropos","À propos"],["parcours","Parcours"],["competences","Compétences"],
+  ["projets","Projets"],["stages","Stages"],["veille","Veille"],["synthese","Synthèse"],
+  ["documents","Documents"],["contact","Contact"]
+];
+
+function go(id){
+  if(!TABS.some(t=>t[0]===id)) id="accueil";
+  document.querySelectorAll(".panel").forEach(p=>p.classList.toggle("active",p.id===id));
+  document.querySelectorAll("button.tab").forEach(b=>b.classList.toggle("active",b.dataset.id===id));
+  $("nav").classList.remove("open");
+  history.replaceState(null,"","#"+id);
+  window.scrollTo({top:0,behavior:"smooth"});
+  if(id==="accueil") runCounters();
+  if(id==="veille") closeVeille();
+}
+
+// Affiche une veille (onglet interne de la page Veille)
+function showVeille(idx){
+  const V = DATA.veilles[idx];
+  if(!V) return;
+  $("veille-list").style.display = "none";
+  $("veille-content").style.display = "block";
+  window.scrollTo({top:0,behavior:"smooth"});
+  const tbl = (head, rows) => `<div class="table-wrap"><table style="min-width:560px"><thead><tr>${head.map(x=>`<th>${esc(x)}</th>`).join("")}</tr></thead><tbody>${rows.map(r=>`<tr>${r.map((c,i)=>`<td${i===0?' style="font-weight:600"':''}>${esc(c)}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
+  $("veille-content").innerHTML = `
+    <button type="button" class="btn ghost" onclick="closeVeille()">← Retour aux veilles</button>
+    <h3 class="cat">${esc(V.titre)}</h3>
+    <div class="stats" style="margin-top:0">${V.essentiel.map(e=>`<div class="card stat"><b>${esc(e.v)}</b><span>${esc(e.t)}</span></div>`).join("")}</div>
+    ${V.pdf ? `<p style="margin-bottom:10px"><a class="btn primary" href="${esc(V.pdf)}" target="_blank" rel="noopener" download>📄 Télécharger la veille en PDF</a></p>` : ""}
+
+    <h3 class="cat">1. Présentation de la veille</h3>
+    ${tbl(["Élément","Détail"], V.presentation)}
+
+    <h3 class="cat">2. C'est quoi un ransomware ?</h3>
+    <div class="card"><p>${esc(V.definition)}</p></div>
+
+    <h3 class="cat">3. Chiffres clés</h3>
+    ${tbl(["Indicateur","Valeur","Source"], V.chiffres)}
+
+    <h3 class="cat">4. Les groupes les plus actifs</h3>
+    ${tbl(["Groupe","Ce qu'on sait","Sources"], V.groupes)}
+
+    <h3 class="cat">5. Faits et publications marquants</h3>
+    <div class="timeline">${V.faits.map(f=>`
+      <div class="tl-item"><div class="tl-date">${esc(f.date)}</div><h3>${esc(f.titre)}</h3>
+      <p style="color:var(--muted)">${esc(f.desc)}</p><span class="tag">${esc(f.src)}</span></div>`).join("")}</div>
+
+    <h3 class="cat">6. Tendances à retenir</h3>
+    <div class="grid">${V.tendances.map(t=>`<div class="card"><h3>${esc(t[0])}</h3><p>${esc(t[1])}</p></div>`).join("")}</div>
+
+    <h3 class="cat">7. Se protéger</h3>
+    ${tbl(["Ce qu'on observe","Mesure utile"], V.protection)}
+    <p class="hint" style="text-align:left">${esc(V.protectionNote)}</p>
+
+    <h3 class="cat">8. Esprit critique</h3>
+    <div class="card"><ul style="padding-left:20px;color:var(--muted);display:grid;gap:8px">${V.critique.map(c=>`<li>${esc(c)}</li>`).join("")}</ul></div>
+
+    <h3 class="cat">9. Sources</h3>
+    <div class="table-wrap"><table style="min-width:560px"><thead><tr><th>N°</th><th>Source</th><th>Date</th><th>Lien</th></tr></thead><tbody>
+      ${V.sources.map(s=>`<tr><td>${s.n}</td><td style="font-weight:600">${esc(s.titre)}</td><td>${esc(s.date)}</td><td><a href="${esc(s.lien)}" target="_blank" rel="noopener">Ouvrir →</a></td></tr>`).join("")}
+    </tbody></table></div>`;
+}
+
+function closeVeille(){
+  $("veille-content").style.display = "none";
+  $("veille-list").style.display = "";
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function render(){
+  const D = DATA;
+  document.title = "Portfolio · " + D.nom;
+  $("logo").textContent = D.nom;
+  $("tabs").innerHTML = TABS.map(([id,l])=>`<li><button class="tab" data-id="${id}" onclick="go('${id}')">${l}</button></li>`).join("");
+
+  // Accueil
+  $("h-badge").textContent = D.titre;
+  const h = new Date().getHours();
+  $("h-greet").textContent = (h >= 5 && h < 18) ? "Bonjour" : "Bonsoir";
+  $("h-name").textContent = D.nom;
+  $("h-intro").textContent = D.intro;
+  $("avatar").innerHTML = D.photo ? `<img src="${esc(D.photo)}" alt="Photo de ${esc(D.nom)}">` :
+    esc(D.nom.split(" ").map(w=>w[0]).slice(0,2).join("").toUpperCase());
+
+  // Stats animées
+  const nbTech = D.competences.reduce((n,c)=>n+c.items.length,0);
+  const stats = [
+    [nbTech,"Technologies"],
+    [D.blocs.length,"Blocs de compétences"],
+    [D.interets.length,"Domaines de passion"],
+    ["∞","Envie d'apprendre"]
+  ];
+  $("stats").innerHTML = stats.map(([v,l])=>`<div class="card stat"><b ${typeof v==="number"?`data-target="${v}"`:""}>${typeof v==="number"?0:v}</b><span>${esc(l)}</span></div>`).join("");
+
+  // Bandeau défilant des technos
+  const techs = [...D.competences.flatMap(c=>c.items.map(i=>i.nom)), ...D.interets];
+  const chips = techs.map(t=>`<span>${esc(t)}</span>`).join("");
+  $("marquee").innerHTML = chips + chips;
+
+  // Accès rapides
+  const quick = [["💻","Projets","projets"],["🛠️","Compétences","competences"],["📡","Veille","veille"],["🎓","Parcours","parcours"]];
+  $("quick").innerHTML = quick.map(([ic,l,id])=>`<div class="card" onclick="go('${id}')"><span class="ic">${ic}</span><h3>${l}</h3></div>`).join("");
+
+  // A propos
+  $("about-text").innerHTML = `<p>${esc(D.apropos)}</p>`;
+  $("interests").innerHTML = D.interets.map(i=>`<span class="tag">${esc(i)}</span>`).join("");
+
+  // Parcours
+  $("timeline").innerHTML = D.parcours.map(p=>`
+    <div class="tl-item"><div class="tl-date">${esc(p.date)}</div>
+    <h3>${esc(p.titre)}</h3><div class="sub" style="margin:0">${esc(p.lieu)}</div><p>${esc(p.desc)}</p></div>`).join("");
+
+  // Compétences
+  $("blocs").innerHTML = D.blocs.map(b=>`<div class="card"><h3>${esc(b.titre)}</h3><p>${esc(b.desc)}</p></div>`).join("");
+  $("skills").innerHTML = D.competences.map(c=>`
+    <h3 class="cat">${esc(c.cat)}</h3>
+    ${c.items.map(s=>`<div class="skill"><div class="skill-top"><span>${esc(s.nom)}</span><span>${s.niveau}%</span></div>
+    <div class="bar"><span style="width:${+s.niveau}%"></span></div></div>`).join("")}`).join("");
+
+  // Projets
+  $("projects").innerHTML = D.projets.length ? D.projets.map(p=>`
+    <div class="card"><h3>${esc(p.titre)}</h3><p>${esc(p.desc)}</p>
+    <div>${(p.tags||[]).map(t=>`<span class="tag">${esc(t)}</span>`).join("")}</div>
+    ${p.lien?`<p style="margin-top:12px"><a href="${esc(p.lien)}" target="_blank" rel="noopener">${esc(p.lienTexte||"Voir")} →</a></p>`:""}</div>`).join("") : empty("Aucun projet pour l'instant.");
+
+  // Stages
+  $("internships").innerHTML = D.stages.length ? D.stages.map(s=>`
+    <div class="card"><div class="tl-date">${esc(s.date)}</div><h3>${esc(s.titre)}</h3>
+    <div class="sub" style="margin:0">${esc(s.entreprise)}</div><p>${esc(s.desc)}</p>
+    <div>${(s.tags||[]).map(t=>`<span class="tag">${esc(t)}</span>`).join("")}</div></div>`).join("") : empty("Aucun stage pour l'instant.");
+
+  // Veille : une carte cliquable par veille (le contenu s'ouvre au clic)
+  $("veille-list").innerHTML = D.veilles.map((v,k)=>`
+    <div class="card" style="cursor:pointer" onclick="showVeille(${k})"><h3>${esc(v.titre)}</h3><p>${esc(v.desc||v.theme)}</p>
+    <div>${(v.tags||[]).map(t=>`<span class="tag">${esc(t)}</span>`).join("")}</div>
+    <p style="margin-top:12px"><a href="#veille" onclick="event.preventDefault()">Voir la veille →</a></p></div>`).join("");
+
+  // Synthèse
+  const S = D.synthese;
+  $("synth-table").innerHTML = `<thead><tr><th>Compétence</th>${S.colonnes.map(c=>`<th style="text-align:center">${esc(c)}</th>`).join("")}</tr></thead>
+    <tbody>${S.lignes.map(l=>`<tr><td>${esc(l.comp)}</td>${l.valide.map(v=>`<td class="ok">${v?"✔":""}</td>`).join("")}</tr>`).join("")}</tbody>`;
+
+  // Documents
+  $("docs").innerHTML = D.documents.map(d=>`
+    <div class="card"><h3>📄 ${esc(d.titre)}</h3><p>${esc(d.desc)}</p>
+    ${d.lien?`<p style="margin-top:10px"><a href="${esc(d.lien)}" target="_blank" rel="noopener" download>Télécharger →</a></p>`:`<p class="empty" style="margin-top:10px">Fichier à ajouter</p>`}</div>`).join("");
+
+  // Contact
+  const C = D.contact, rows = [];
+  if(C.email) rows.push(`<div class="card">✉️ <a href="mailto:${esc(C.email)}">${esc(C.email)}</a></div>`);
+  if(C.telephone) rows.push(`<div class="card">📞 <a href="tel:${esc(C.telephone)}">${esc(C.telephone)}</a></div>`);
+  if(C.linkedin) rows.push(`<div class="card">💼 <a href="${esc(C.linkedin)}" target="_blank" rel="noopener">LinkedIn</a></div>`);
+  if(C.github) rows.push(`<div class="card">💻 <a href="${esc(C.github)}" target="_blank" rel="noopener">GitHub</a></div>`);
+  if(C.ville) rows.push(`<div class="card">📍 ${esc(C.ville)}</div>`);
+  $("contact-list").innerHTML = rows.join("");
+
+  $("footer").textContent = "© " + new Date().getFullYear() + " " + D.nom + " · Portfolio BTS SIO SISR";
+}
+
+/* ===================== FORMULAIRE DE CONTACT =====================
+   Envoi réel via FormSubmit (service gratuit, sans serveur).
+   ⚠️ Au tout premier envoi, FormSubmit envoie un mail d'activation
+   à ton adresse : clique sur le lien dedans, c'est fait une fois pour toutes.
+   Si l'envoi échoue, on ouvre ton application mail en secours (mailto). */
+$("form").addEventListener("submit", async e=>{
+  e.preventDefault();
+  const btn = $("f-btn"), st = $("f-status");
+  const name = $("f-name").value.trim(), mail = $("f-mail").value.trim(), msg = $("f-msg").value.trim();
+  if($("f-hp").value) return; // anti-spam (champ caché rempli par un robot)
+
+  btn.disabled = true; btn.textContent = "Envoi en cours…";
+  st.className = "form-status"; st.textContent = "";
+
+  try{
+    const r = await fetch("https://formsubmit.co/ajax/" + encodeURIComponent(DATA.contact.email), {
+      method: "POST",
+      headers: {"Content-Type":"application/json","Accept":"application/json"},
+      body: JSON.stringify({
+        name: name,
+        email: mail,
+        message: msg,
+        _subject: "Message depuis ton portfolio (" + name + ")",
+        _replyto: mail,
+        _template: "table",
+        _captcha: "false"
+      })
+    });
+    const j = await r.json().catch(()=>({}));
+    if(!r.ok || j.success === "false" || j.success === false) throw new Error(j.message || "Erreur d'envoi");
+    st.className = "form-status ok";
+    st.textContent = "✅ Message envoyé, merci ! Je te réponds vite.";
+    $("form").reset();
+  }catch(err){
+    st.className = "form-status ko";
+    st.textContent = "❌ Envoi impossible pour le moment. Ouverture de ton application mail…";
+    const sub = encodeURIComponent("Message depuis ton portfolio");
+    const body = encodeURIComponent(msg + "\n\n" + name + " (" + mail + ")");
+    setTimeout(()=>{ location.href = `mailto:${DATA.contact.email}?subject=${sub}&body=${body}`; }, 900);
+  }finally{
+    btn.disabled = false; btn.textContent = "Envoyer par e-mail";
+  }
+});
+
+$("burger").onclick = ()=>$("nav").classList.toggle("open");
+
+// Thème clair / sombre
+function setTheme(t){
+  document.documentElement.dataset.theme = t;
+  $("theme").textContent = t==="light" ? "☀️" : "🌙";
+  try{ localStorage.setItem("theme",t); }catch(e){}
+  readColors();
+}
+$("theme").onclick = ()=>setTheme(document.documentElement.dataset.theme==="light"?"dark":"light");
+
+/* ===================== ANIMATIONS ACCUEIL ===================== */
+
+// Compteurs animés
+function runCounters(){
+  document.querySelectorAll("#stats b[data-target]").forEach(el=>{
+    const target = +el.dataset.target;
+    if(REDUCED){ el.textContent = target; return; }
+    const t0 = performance.now(), dur = 1100;
+    (function tick(t){
+      const k = Math.min(1,(t-t0)/dur);
+      el.textContent = Math.round(target*(1-Math.pow(1-k,3)));
+      if(k<1) requestAnimationFrame(tick);
+    })(t0);
+  });
+}
+
+// Machine à écrire
+(function typewriter(){
+  const el = $("typed"), words = DATA.accroches || [];
+  if(!words.length) return;
+  if(REDUCED){ el.textContent = words[0]; return; }
+  let w = 0, c = 0, del = false;
+  (function step(){
+    const word = words[w];
+    el.textContent = word.slice(0,c);
+    let delay = del ? 35 : 80;
+    if(!del && c===word.length){ del = true; delay = 1400; }
+    else if(del && c===0){ del = false; w = (w+1)%words.length; delay = 350; }
+    else c += del ? -1 : 1;
+    setTimeout(step, delay);
+  })();
+})();
+
+// Avatar qui suit la souris (effet 3D)
+(function tilt(){
+  const hero = $("hero"), av = $("avatar-wrap");
+  if(REDUCED) return;
+  hero.addEventListener("mousemove", e=>{
+    const r = av.getBoundingClientRect();
+    const x = (e.clientX - (r.left + r.width/2)) / window.innerWidth;
+    const y = (e.clientY - (r.top + r.height/2)) / window.innerHeight;
+    av.style.transform = `rotateY(${x*30}deg) rotateX(${-y*30}deg)`;
+  });
+  hero.addEventListener("mouseleave", ()=>{ av.style.transform = ""; });
+})();
+
+/* ===================== FOND ANIMÉ (canvas) ===================== */
+const cv = $("bg"), cx = cv.getContext("2d");
+let W, H, P = [], cols = [], mode = "net", colA = "#6c8cff", colB = "#a56cff", bgc = "#0f1220";
+const mouse = {x:-999, y:-999};
+const GLYPHS = "01{}<>/;$#=+*&%".split("");
+
+function readColors(){
+  const s = getComputedStyle(document.documentElement);
+  colA = s.getPropertyValue("--accent").trim() || colA;
+  colB = s.getPropertyValue("--accent2").trim() || colB;
+  bgc  = s.getPropertyValue("--bg").trim() || bgc;
+}
+const mk = () => ({x:Math.random()*W, y:Math.random()*H, vx:(Math.random()-.5)*.5, vy:(Math.random()-.5)*.5, r:Math.random()*1.6+.8});
+
+function resize(){
+  const d = window.devicePixelRatio || 1;
+  W = innerWidth; H = innerHeight;
+  cv.width = W*d; cv.height = H*d;
+  cx.setTransform(d,0,0,d,0,0);
+  const n = Math.min(100, Math.floor(W*H/15000));
+  P = Array.from({length:n}, mk);
+  cols = Array.from({length:Math.ceil(W/16)}, () => Math.random()*H/16);
+}
+
+function drawNet(){
+  cx.clearRect(0,0,W,H);
+  for(const p of P){
+    p.x += p.vx; p.y += p.vy;
+    if(p.x<0||p.x>W) p.vx*=-1;
+    if(p.y<0||p.y>H) p.vy*=-1;
+    const dx = mouse.x-p.x, dy = mouse.y-p.y, dm = Math.hypot(dx,dy);
+    if(dm<170 && dm>1){ p.x += dx*0.004; p.y += dy*0.004; }
+  }
+  for(let i=0;i<P.length;i++){
+    const a = P[i];
+    cx.globalAlpha = .75; cx.fillStyle = colA;
+    cx.beginPath(); cx.arc(a.x,a.y,a.r,0,Math.PI*2); cx.fill();
+    for(let j=i+1;j<P.length;j++){
+      const b = P[j], d = Math.hypot(a.x-b.x,a.y-b.y);
+      if(d<120){
+        cx.globalAlpha = (1-d/120)*.35; cx.strokeStyle = colA; cx.lineWidth = 1;
+        cx.beginPath(); cx.moveTo(a.x,a.y); cx.lineTo(b.x,b.y); cx.stroke();
+      }
+    }
+    const dm = Math.hypot(a.x-mouse.x,a.y-mouse.y);
+    if(dm<170){
+      cx.globalAlpha = (1-dm/170)*.6; cx.strokeStyle = colB;
+      cx.beginPath(); cx.moveTo(a.x,a.y); cx.lineTo(mouse.x,mouse.y); cx.stroke();
+    }
+  }
+  cx.globalAlpha = 1;
+}
+
+function drawMatrix(){
+  cx.globalAlpha = .12; cx.fillStyle = bgc; cx.fillRect(0,0,W,H);
+  cx.globalAlpha = .9; cx.fillStyle = colA; cx.font = "14px ui-monospace, monospace";
+  cols.forEach((y,i)=>{
+    cx.fillText(GLYPHS[Math.floor(Math.random()*GLYPHS.length)], i*16, y*16);
+    cols[i] = (y*16 > H && Math.random() > .975) ? 0 : y + 1;
+  });
+  cx.globalAlpha = 1;
+}
+
+function loop(){
+  if(mode==="net") drawNet(); else drawMatrix();
+  if(!REDUCED) requestAnimationFrame(loop);
+}
+
+function setMode(m){
+  mode = m; cx.clearRect(0,0,W,H);
+  if(REDUCED) loop();
+}
+
+addEventListener("resize", resize);
+addEventListener("mousemove", e=>{ mouse.x = e.clientX; mouse.y = e.clientY; });
+addEventListener("mouseleave", ()=>{ mouse.x = mouse.y = -999; });
+addEventListener("touchmove", e=>{ const t = e.touches[0]; mouse.x = t.clientX; mouse.y = t.clientY; }, {passive:true});
+// Clic : petite explosion de particules
+addEventListener("click", e=>{
+  if(mode!=="net" || !$("accueil").classList.contains("active")) return;
+  if(e.target.closest("button,a,input,.card,.term")) return;
+  for(let i=0;i<6;i++){
+    const a = Math.random()*Math.PI*2, s = Math.random()*2+1;
+    P.push({x:e.clientX, y:e.clientY, vx:Math.cos(a)*s, vy:Math.sin(a)*s, r:Math.random()*2+1});
+  }
+  while(P.length>160) P.shift();
+});
+
+/* ===================== TERMINAL INTERACTIF ===================== */
+const tBody = $("term-body"), tIn = $("term-in");
+const history_ = []; let hIdx = 0;
+const out = (t, cls) => {
+  const d = document.createElement("div"); d.textContent = t;
+  if(cls) d.className = cls;
+  tBody.appendChild(d); tBody.scrollTop = tBody.scrollHeight;
+};
+const CMDS = {
+  help: () => {
+    out("Commandes disponibles :","hl");
+    ["whoami","about","formation","skills","interets","contact","ls","goto <page>","theme","matrix","clear"].forEach(c=>out("  "+c));
+  },
+  whoami: () => { out(DATA.nom,"hl"); out(DATA.titre); },
+  about: () => out(DATA.apropos),
+  formation: () => DATA.parcours.forEach(p=>out(`${p.date}  ${p.titre} — ${p.lieu}`)),
+  skills: () => DATA.competences.forEach(c=>{
+    out(c.cat+" :","hl");
+    c.items.forEach(s=>{
+      const n = Math.round(s.niveau/10);
+      out(`  ${s.nom.padEnd(16)} ${"█".repeat(n)}${"░".repeat(10-n)} ${s.niveau}%`);
+    });
+  }),
+  interets: () => out(DATA.interets.join(" · ")),
+  contact: () => { out("✉  "+DATA.contact.email); if(DATA.contact.linkedin) out("💼 "+DATA.contact.linkedin); },
+  ls: () => out(TABS.map(t=>t[0]).join("  ")),
+  goto: (a) => {
+    const id = (a[0]||"").toLowerCase();
+    if(TABS.some(t=>t[0]===id)){ out("→ "+id); go(id); }
+    else out("page inconnue. Tape ls pour la liste.","err");
+  },
+  theme: () => { setTheme(document.documentElement.dataset.theme==="light"?"dark":"light"); out("thème changé 🎨"); },
+  matrix: () => {
+    if(mode==="net"){ setMode("matrix"); out("Bienvenue dans la matrice… retape matrix pour sortir 🕶️","hl"); }
+    else { setMode("net"); out("Retour à la réalité."); }
+  },
+  clear: () => { tBody.textContent = ""; },
+  sudo: () => out("Nice try 😄 permission refusée.","err")
+};
+function run(raw){
+  const line = raw.trim(); if(!line) return;
+  out("$ "+line,"cmd");
+  history_.push(line); hIdx = history_.length;
+  const [cmd, ...args] = line.split(/\s+/);
+  const f = CMDS[cmd.toLowerCase()];
+  if(f) f(args); else out(`commande introuvable : ${cmd} — tape help`,"err");
+}
+$("term-form").addEventListener("submit", e=>{ e.preventDefault(); run(tIn.value); tIn.value = ""; });
+tIn.addEventListener("keydown", e=>{
+  if(e.key==="ArrowUp" && history_.length){ hIdx = Math.max(0,hIdx-1); tIn.value = history_[hIdx]; e.preventDefault(); }
+  if(e.key==="ArrowDown"){ hIdx = Math.min(history_.length,hIdx+1); tIn.value = history_[hIdx]||""; e.preventDefault(); }
+});
+$("term-chips").innerHTML = ["help","whoami","skills","formation","contact","matrix"].map(c=>`<button type="button" data-c="${c}">${c}</button>`).join("");
+$("term-chips").addEventListener("click", e=>{ const b = e.target.closest("button"); if(b) run(b.dataset.c); });
+out("Bienvenue sur mon portfolio 👋","hl");
+out("Tape help pour voir les commandes.");
+
+/* ===================== DÉMARRAGE ===================== */
+let saved=null; try{ saved=localStorage.getItem("theme"); }catch(e){}
+setTheme(saved || (matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark"));
+render();
+resize();
+loop();
+go(location.hash.slice(1) || "accueil");
+</script>
+</body>
+</html>
